@@ -7,7 +7,7 @@ Download TikTok Video or Music  & get all relative meta infos **using only JavaS
 - vm.tiktok.com/.....
 
 ## Basic Demo
-[TikTok Video & Music Downloader with only Javascript](https://abdelyouni.github.io/JS-TikTok-Downloader/index.html "TikTok Video & Music Downloader with only Javascript")
+[TikTok Video & Music Downloader with only Javascript](https://abdelyouni.github.io/JS-TikTok-Downloader/demo.html "TikTok Video & Music Downloader with only Javascript")
 
 ## Example
 ###### Basic usage :
