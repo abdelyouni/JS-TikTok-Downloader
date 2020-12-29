@@ -4,7 +4,7 @@
  * @author  Abdel Youni <abdelyouni@gmail.com>
  * @see     https://github.com/abdelyouni/JS-TikTok-Downloader
  */
-class TikGet {
+class JSTikTok {
     constructor(url) {
       this.url = url;
       this.datas = null;

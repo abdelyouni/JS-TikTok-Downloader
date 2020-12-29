@@ -11,10 +11,10 @@ Download TikTok Video or Music  & get all relative meta infos **using only JavaS
 
 ```html
 //Import the class
-<script src="tiktok.class.js"></script>
+<script src="src/tiktok.class.js"></script>
 
 <script>
-const TikTok = new TikGet('TIKTOK_VIDEO_URL');
+const TikTok = new JSTikTok('TIKTOK_VIDEO_URL');
 TikTok.get().then(function(){
 	//Log the video title
 	console.log(TikTok.datas.video.title);
@@ -29,7 +29,7 @@ TikTok.get().then(function(){
 ###### Force Download Video :
 Start video download :
 ```
-const TikTok = new TikGet('TIKTOK_VIDEO_URL');
+const TikTok = new JSTikTok('TIKTOK_VIDEO_URL');
 
 TikTok.get().then(function(){
 
@@ -41,7 +41,7 @@ TikTok.get().then(function(){
 Start music download :
 
 ```
-const TikTok = new TikGet('TIKTOK_VIDEO_URL');
+const TikTok = new JSTikTok('TIKTOK_VIDEO_URL');
 
 TikTok.get().then(function(){
 

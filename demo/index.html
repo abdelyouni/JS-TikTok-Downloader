@@ -1,0 +1,204 @@
+<!--
+ JS tiktok downloader
+ @version 1.0.0
+ @author  Abdel Youni <abdelyouni@gmail.com>
+ @see     https://github.com/abdelyouni/JS-TikTok-Downloader
+-->
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="TikTok Video Downloader">
+    <title>TikTok Video & Music Downloader with only Javascript</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css">
+    <style>
+        h1,
+        h2,
+        h3,
+        h4,
+        h5 {
+            padding: 10px 0;
+            font-family: "Crimson Text";
+        }
+
+        #search-bar {
+            display: none;
+        }
+
+        #search-bar {
+            padding-bottom: 25px;
+            border-bottom: 3px solid #009688;
+            margin-bottom: 20px;
+            background: #607D8B;
+            color: white;
+        }
+
+        #result-area {
+            display: none;
+            margin-bottom: 20px;
+        }
+
+        #loading {
+            display: none;
+        }
+
+        #loading span {
+            font-size: 72px;
+            animation: wv_load 2s linear infinite;
+        }
+
+        @keyframes wv_load {
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+
+        .result {
+            background-color: #ddd;
+            padding: 10px 0;
+            margin-bottom: 15px;
+        }
+
+        .result .result-text {
+            border-right: 1px solid #337ab7;
+            position: relative;
+            top: 14px;
+        }
+
+    </style>
+
+    <script src="../src/tiktok.class.js"></script>
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.0/jquery-ui.min.js"></script>
+</head>
+
+<body>
+
+    <div class='col-xs-12' id='search-bar'>
+        <div class='col-xs-6 col-xs-offset-3'>
+            <h2 class='text-center'>TikTok JS Downloader</h2>
+            <div class='input-group input-group-lg'>
+                <input class='form-control' placeholder='Enter TikTok video URL ...' type='text'>
+                <span class='input-group-btn'>
+                    <button class='btn btn-default' id='search-btn' title=' Search ' type='button'>
+                        <span class='glyphicon glyphicon-search text-primary'></span>
+                    </button>
+
+                </span>
+            </div>
+        </div>
+    </div>
+    <div class='col-xs-8 col-xs-offset-2' id='welcome'>
+        <h1 class='text-center text-primary'>Enter TikTok video URL to start downloading</h1>
+    </div>
+    <div class='col-xs-12' id='result-area'>
+        <div class='col-xs-8 col-xs-offset-2 result' id='result-base'>
+            <div class='col-xs-1 result-text text-center text-primary'>MP4</div>
+            <div class='col-xs-11'>
+                <div class='btn btn-group-justified'>
+                    <span class='btn btn-primary' id="download_video">
+                        <span class='result-download-video'></span>
+                        <span class='glyphicon glyphicon-download pull-right'></span>
+                    </span>
+                </div>
+            </div>
+        </div>
+        <div class='col-xs-8 col-xs-offset-2 result' id='result-base'>
+            <div class='col-xs-1 result-text text-center text-primary'>MP3</div>
+            <div class='col-xs-11'>
+                <div class='btn btn-group-justified'>
+                    <span class='btn btn-primary' id="download_music">
+                        <span class='result-download-music'></span>
+                        <span class='glyphicon glyphicon-download pull-right'></span>
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div align='center' class='col-xs-12' id='loading'>
+        <span class='glyphicon glyphicon-repeat text-primary'></span>
+    </div>
+</body>
+
+<script>
+    var TikTok = null;
+    var oldVideoDownloadBtn = "";
+    var oldMusicDownloadBtn = "";
+    $(document).ready(function () {
+        $('#search-bar').slideDown("slow");
+
+        $('#search-btn').on("click", function () {
+            TikTok = null;
+            $('#result-area').fadeOut();
+            var url = $("input").val().trim();
+
+            if (url.toLowerCase().indexOf("tiktok.com/") < 0) {
+                $('.input-group').effect("shake");
+                return;
+            }
+
+            $('#search-btn').prop('disabled', true);
+            $('#no-result, #welcome').hide("slide", { direction: "left" }, 200);
+
+            setTimeout(function () {
+                $("#loading").fadeIn();
+                TikTok = new JSTikTok(url);
+                TikTok.get().then(function () {
+                    showDatas(TikTok.datas);
+                });
+            }, 250);
+        });
+
+        $('#download_video').on('click', function () {
+            $('.result-download-video').html('Downloading MP4 ... <span class="glyphicon glyphicon-time "></span>');
+            done("video");
+            TikTok.download_video();
+        });
+        $('#download_music').on('click', function () {
+            $('.result-download-music').html('Downloading MP3 ... <span class="glyphicon glyphicon-time "></span>');
+            done("music");
+            TikTok.download_music();
+        });
+
+
+    });
+
+    function done(type) {
+        var proxied = window.XMLHttpRequest.prototype.send;
+        window.XMLHttpRequest.prototype.send = function () {
+            var pointer = this
+            var intervalId = window.setInterval(function () {
+                if (pointer.readyState != 4) {
+                    return;
+                }
+                if (type == "video") {
+                    $('.result-download-video').text(oldVideoDownloadBtn);
+                }
+                else if (type == "music") {
+                    $('.result-download-music').text(oldMusicDownloadBtn);
+                }
+
+                clearInterval(intervalId);
+
+            }, 1);
+            return proxied.apply(this, [].slice.call(arguments));
+        };
+    }
+
+    function showDatas(datas) {
+        $('#search-btn').prop('disabled', false);
+        $("#loading").fadeOut();
+        $('#result-area').fadeIn();
+        $('.result-download-video').text(datas.video.title + " [MP4]");
+        $('.result-download-music').text(datas.video.title + " [MP3]");
+        oldVideoDownloadBtn = $('.result-download-video').text();
+        oldMusicDownloadBtn = $('.result-download-music').text();
+    }
+
+</script>
+
+</html>
