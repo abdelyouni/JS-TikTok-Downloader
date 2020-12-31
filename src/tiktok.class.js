@@ -50,9 +50,8 @@ class JSTikTok {
         var resp =  await fetch(tiktokUrl).then(response => response.text()).then((data) => { return data; });
         
         if (resp.includes(patterns[0])) {
-            tiktokUrl = explode(this.patterns[1], explode(this.patterns[0], resp)[1])[0];
             tiktokUrl = resp.split(patterns[0])[1].split(patterns[1])[0];
-            resp =  await fetch(tiktokUrl).then(response => response.text()).then((data) => { return data; });
+            resp =  await fetch(this.bypassCorsHeaders + this.urlencode(tiktokUrl)).then(response => response.text()).then((data) => { return data; });
         }
         
         var json = JSON.parse(resp.split(patterns[4])[1].split(patterns[3])[0].split(patterns[2])[1]);
