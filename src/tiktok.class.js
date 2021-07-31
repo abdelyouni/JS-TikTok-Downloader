@@ -67,10 +67,10 @@ class JSTikTok {
             shares:json.props.pageProps.itemInfo.itemStruct.stats.shareCount,
             comments:json.props.pageProps.itemInfo.itemStruct.stats.commentCount,
             vues:json.props.pageProps.itemInfo.itemStruct.stats.playCount,
-            title:json.props.pageProps.metaParams.title,
-            keywords:json.props.pageProps.metaParams.keywords,
-            description:json.props.pageProps.metaParams.description,
-            original_url:json.props.pageProps.metaParams.canonicalHref,
+            title:json.props.pageProps.seoProps.metaParams.title,
+            keywords:json.props.pageProps.seoProps.metaParams.keywords,
+            description:json.props.pageProps.seoProps.metaParams.description,
+            original_url:json.props.pageProps.seoProps.metaParams.canonicalHref,
             download_url:json.props.pageProps.itemInfo.itemStruct.video.downloadAddr,
         };
 
